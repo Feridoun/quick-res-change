@@ -1,0 +1,5 @@
+#include "resource.h"
+
+// Two icons so the tray visibly reflects which state we're in.
+IDI_ICON_BASE    ICON  "icon_base.ico"
+IDI_ICON_CHOSEN  ICON  "icon_chosen.ico"

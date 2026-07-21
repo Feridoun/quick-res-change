@@ -1,0 +1,11 @@
+# Build intermediates
+*.obj
+*.res
+*.pdb
+*.ilk
+
+# Runtime config (user-specific chosen resolution)
+res_toggle.ini
+
+# Note: res_toggle.exe IS committed on purpose so users can download and run
+# it without building. Remove it from below if you want it ignored.
