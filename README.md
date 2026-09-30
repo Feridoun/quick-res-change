@@ -1,15 +1,20 @@
 # Res Toggle
 
 A tiny (~117 KB, single `.exe`, zero dependencies) Windows system-tray app that
-toggles the primary display between two resolutions.
+switches the primary display between your usual resolution, a secondary one and
+an optional third.
 
-- **Left-click** the tray icon → switch between your **target** resolution and
-  the resolution that was active when the app launched.
-- **Right-click** → menu to pick a target resolution, toggle, read About, or quit.
+- **Left-click** the tray icon → cycle usual → secondary → (third) → usual.
+- **Right-click** → Switch now, Settings…, About, or Quit.
 
-The tray icon is **dim** while on the launch resolution and **bright** while on
-the target, so you can tell the state at a glance. The chosen target is saved to
-`res_toggle.ini` (next to the exe) and remembered across restarts.
+**Settings…** has a drop-down for the **usual** and **secondary** resolutions,
+plus a checkbox and drop-down for an optional **third**. The third is only
+cycled through while the box is ticked. Your picks are kept even while it's
+unticked.
+
+The tray icon is **dim** while on the usual resolution and **bright** otherwise,
+so you can tell the state at a glance. Settings are saved to `res_toggle.ini`
+(next to the exe) and remembered across restarts.
 
 ## Build
 
@@ -27,9 +32,9 @@ itself, so you don't need the "x64 Native Tools" prompt.
 
 1. Run `res_toggle.exe`. An icon appears in the system tray (check the `^`
    overflow area if you don't see it).
-2. **Right-click → Set target resolution**, pick the one you want to switch to.
-3. **Left-click** the icon any time to toggle between that target and your
-   normal resolution.
+2. **Right-click → Settings…**. Choose your usual and secondary resolutions,
+   and optionally tick **Third resolution** and choose one.
+3. **Left-click** the icon any time to cycle through them.
 
 ### Start automatically with Windows
 
@@ -41,12 +46,12 @@ into the folder that opens.
 | File               | Purpose                                             |
 |--------------------|-----------------------------------------------------|
 | `res_toggle.cpp`   | The whole app (Win32, ~300 lines).                  |
-| `resource.h`       | Icon resource ids.                                  |
-| `res_toggle.rc`    | Resource script referencing the two icons.          |
+| `resource.h`       | Icon and dialog resource ids.                       |
+| `res_toggle.rc`    | Resource script: the two icons + settings dialog.   |
 | `icon_base.ico`    | Dim monitor icon (shown on launch resolution).      |
 | `icon_chosen.ico`  | Bright monitor icon (shown on target resolution).   |
 | `build.bat`        | One-step build.                                     |
-| `res_toggle.ini`   | Auto-created; stores your chosen target resolution. |
+| `res_toggle.ini`   | Auto-created; stores your chosen resolutions.       |
 
 ## Notes
 
