@@ -9,3 +9,4 @@
 #define IDC_SECONDARY    202   // combo: secondary resolution
 #define IDC_USE_THIRD    203   // checkbox: include third resolution in cycle
 #define IDC_THIRD        204   // combo: third resolution
+#define IDC_AUTOSTART    205   // checkbox: start with Windows

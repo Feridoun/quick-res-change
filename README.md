@@ -1,8 +1,8 @@
 # Res Toggle
 
-A tiny (~117 KB, single `.exe`, zero dependencies) Windows system-tray app that
-switches the primary display between your usual resolution, a secondary one and
-an optional third.
+A tiny (~150 KB, single signed `.exe`, zero dependencies) Windows system-tray
+app that switches the primary display between your usual resolution, a
+secondary one and an optional third.
 
 - **Left-click** the tray icon → cycle usual → secondary → (third) → usual.
 - **Right-click** → Switch now, Settings…, About, or Quit.
@@ -15,6 +15,23 @@ unticked.
 The tray icon is **dim** while on the usual resolution and **bright** otherwise,
 so you can tell the state at a glance. Settings are saved to `res_toggle.ini`
 (next to the exe) and remembered across restarts.
+
+## Install
+
+**winget** (recommended):
+
+```
+winget install Feridoun.ResToggle
+```
+
+Then run `res-toggle` from Start → Run or a terminal. Update later with
+`winget upgrade Feridoun.ResToggle`.
+
+**Manual:** download `res_toggle.exe` from the
+[latest release](https://github.com/Feridoun/quick-res-change/releases/latest)
+and run it. No installer is needed.
+
+The exe is code-signed (Certum).
 
 ## Build
 
@@ -30,28 +47,31 @@ itself, so you don't need the "x64 Native Tools" prompt.
 
 ## Use
 
-1. Run `res_toggle.exe`. An icon appears in the system tray (check the `^`
-   overflow area if you don't see it).
+1. Run `res-toggle` (winget) or `res_toggle.exe`. An icon appears in the
+   system tray (check the `^` overflow area if you don't see it).
 2. **Right-click → Settings…**. Choose your usual and secondary resolutions,
    and optionally tick **Third resolution** and choose one.
 3. **Left-click** the icon any time to cycle through them.
 
 ### Start automatically with Windows
 
-Press `Win+R`, type `shell:startup`, and drop a shortcut to `res_toggle.exe`
-into the folder that opens.
+Right-click the tray icon → **Settings…** and tick **Start with Windows**. This
+adds a per-user entry under
+`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. No admin rights are
+needed, and you can also turn it off from Task Manager's **Startup apps** tab.
 
 ## Files
 
 | File               | Purpose                                             |
 |--------------------|-----------------------------------------------------|
-| `res_toggle.cpp`   | The whole app (Win32, ~300 lines).                  |
+| `res_toggle.cpp`   | The whole app (Win32, ~430 lines).                  |
 | `resource.h`       | Icon and dialog resource ids.                       |
 | `res_toggle.rc`    | Resource script: the two icons + settings dialog.   |
-| `icon_base.ico`    | Dim monitor icon (shown on launch resolution).      |
-| `icon_chosen.ico`  | Bright monitor icon (shown on target resolution).   |
+| `icon_base.ico`    | Dim monitor icon (shown on your usual resolution).  |
+| `icon_chosen.ico`  | Bright monitor icon (shown on any other).           |
 | `build.bat`        | One-step build.                                     |
 | `res_toggle.ini`   | Auto-created; stores your chosen resolutions.       |
+| `winget/`          | Winget manifests (submitted to microsoft/winget-pkgs). |
 
 ## Notes
 

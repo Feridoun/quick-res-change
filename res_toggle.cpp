@@ -24,6 +24,7 @@
 #include "resource.h"
 
 #pragma comment(lib, "Shlwapi.lib")
+#pragma comment(lib, "Advapi32.lib")
 // Modern (themed) look for the settings dialog's controls.
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -154,6 +155,32 @@ static void LoadSettings() {
     if (g_secondaryRes == g_primaryRes) g_secondaryRes = {};
 }
 
+// ---------------------------------------------------------------------------
+// Start with Windows (HKCU Run key; the registry is the source of truth so
+// toggling it from Task Manager's Startup tab is reflected here too)
+// ---------------------------------------------------------------------------
+static const wchar_t* kRunKey = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+static const wchar_t* kRunValue = L"ResToggle";
+
+static bool IsAutoStartEnabled() {
+    DWORD size = 0;
+    return RegGetValueW(HKEY_CURRENT_USER, kRunKey, kRunValue, RRF_RT_REG_SZ,
+                        nullptr, nullptr, &size) == ERROR_SUCCESS;
+}
+
+static void SetAutoStart(bool enable) {
+    if (!enable) {
+        RegDeleteKeyValueW(HKEY_CURRENT_USER, kRunKey, kRunValue);
+        return;
+    }
+    wchar_t exe[MAX_PATH];
+    GetModuleFileNameW(nullptr, exe, MAX_PATH);
+    wchar_t cmd[MAX_PATH + 2];
+    wsprintfW(cmd, L"\"%s\"", exe);
+    RegSetKeyValueW(HKEY_CURRENT_USER, kRunKey, kRunValue, REG_SZ, cmd,
+                    (DWORD)((lstrlenW(cmd) + 1) * sizeof(wchar_t)));
+}
+
 static bool IsConfigured() {
     return g_primaryRes.w != 0 && g_secondaryRes.w != 0;
 }
@@ -244,6 +271,8 @@ static INT_PTR CALLBACK SettingsProc(HWND dlg, UINT msg, WPARAM wp, LPARAM) {
             FillCombo(dlg, IDC_THIRD, g_thirdRes);
             CheckDlgButton(dlg, IDC_USE_THIRD, g_useThird ? BST_CHECKED : BST_UNCHECKED);
             EnableWindow(GetDlgItem(dlg, IDC_THIRD), g_useThird);
+            CheckDlgButton(dlg, IDC_AUTOSTART,
+                           IsAutoStartEnabled() ? BST_CHECKED : BST_UNCHECKED);
             SetForegroundWindow(dlg);
             return TRUE;
 
@@ -279,6 +308,7 @@ static INT_PTR CALLBACK SettingsProc(HWND dlg, UINT msg, WPARAM wp, LPARAM) {
                     if (t.w != 0) g_thirdRes = t;  // keep the old pick if left blank
                     g_useThird = useThird;
                     SaveSettings();
+                    SetAutoStart(IsDlgButtonChecked(dlg, IDC_AUTOSTART) == BST_CHECKED);
                     EndDialog(dlg, IDOK);
                     return TRUE;
                 }
@@ -399,6 +429,8 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, PWSTR, int) {
     ResolveIniPath();
     EnumerateModes();
     LoadSettings();
+    // If auto-start is on, keep it pointing at this exe in case it moved.
+    if (IsAutoStartEnabled()) SetAutoStart(true);
 
     // Icons: two from resources so we can visually distinguish states.
     g_iconA = LoadIconW(hInst, MAKEINTRESOURCEW(IDI_ICON_BASE));
