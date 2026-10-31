@@ -69,6 +69,7 @@ needed, and you can also turn it off from Task Manager's **Startup apps** tab.
 | `res_toggle.rc`    | Resource script: the two icons + settings dialog.   |
 | `icon_base.ico`    | Dim monitor icon (shown on your usual resolution).  |
 | `icon_chosen.ico`  | Bright monitor icon (shown on any other).           |
+| `make_icons.py`    | Regenerates both icons (needs Pillow).              |
 | `build.bat`        | One-step build.                                     |
 | `res_toggle.ini`   | Auto-created; stores your chosen resolutions.       |
 | `winget/`          | Winget manifests (submitted to microsoft/winget-pkgs). |
