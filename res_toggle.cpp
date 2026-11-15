@@ -201,18 +201,18 @@ static void UpdateTrayTip() {
 
     if (!IsConfigured()) {
         wsprintfW(g_nid.szTip,
-                  L"Res Toggle — %lux%lu\nRight-click > Settings to set up",
+                  L"Res Toggle \u2014 %lux%lu\nRight-click > Settings to set up",
                   cur.w, cur.h);
     } else if (g_useThird && g_thirdRes.w != 0) {
         wsprintfW(g_nid.szTip,
-                  L"Res Toggle — now %lux%lu\nClick: %lux%lu > %lux%lu > %lux%lu",
+                  L"Res Toggle \u2014 now %lux%lu\nClick: %lux%lu > %lux%lu > %lux%lu",
                   cur.w, cur.h,
                   g_primaryRes.w, g_primaryRes.h,
                   g_secondaryRes.w, g_secondaryRes.h,
                   g_thirdRes.w, g_thirdRes.h);
     } else {
         wsprintfW(g_nid.szTip,
-                  L"Res Toggle — now %lux%lu\nClick: toggle %lux%lu <-> %lux%lu",
+                  L"Res Toggle \u2014 now %lux%lu\nClick: toggle %lux%lu <-> %lux%lu",
                   cur.w, cur.h,
                   g_primaryRes.w, g_primaryRes.h,
                   g_secondaryRes.w, g_secondaryRes.h);

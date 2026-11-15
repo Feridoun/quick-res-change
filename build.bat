@@ -18,7 +18,7 @@ rc /nologo /fo res_toggle.res res_toggle.rc
 if errorlevel 1 exit /b 1
 
 echo Compiling app...
-cl /nologo /W3 /O2 /EHsc /DUNICODE /D_UNICODE res_toggle.cpp res_toggle.res ^
+cl /nologo /utf-8 /W3 /O2 /EHsc /DUNICODE /D_UNICODE res_toggle.cpp res_toggle.res ^
    /Fe:res_toggle.exe /link /SUBSYSTEM:WINDOWS /MANIFEST:EMBED ^
    user32.lib shell32.lib shlwapi.lib gdi32.lib advapi32.lib
 if errorlevel 1 exit /b 1
